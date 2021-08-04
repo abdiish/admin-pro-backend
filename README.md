@@ -1,6 +1,6 @@
 # AdminPro - Backend
 
-Recuerden ejecutar 
+Para reconstruir modulos, ejecutar 
 
 ```
 npm install
