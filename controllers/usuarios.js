@@ -8,16 +8,38 @@ const { generarJWT } = require('../helpers/jwt');
 
 const getUsuarios = async (req, res)=> {
 
-    const usuarios =  await Usuario.find({}, 'nombre email role google');
+    const desde = Number(req.query.desde) || 0;
+    console.log(desde);
+    // Paginar resultados
+    // const usuarios =  await Usuario
+    //                             .find({}, 'nombre email role google')
+    //                             .skip( desde )
+    //                             .limit( 5 );
+    
+    // Total de registros en la BD
+    // const total = await Usuario.count();
+
+    // Coleccion de promesas(ES6)
+    // Desestructuración para extraer el resultado de la primera y segunda posición del arreglo
+    const [ usuarios, total ] = await Promise.all([
+
+        Usuario //Posicion 1 del arreglo
+            .find({}, 'nombre email role google img')
+            .skip( desde )
+            .limit( 5 ),
+        
+        Usuario.countDocuments() // Posición 2 del arreglo
+    ])
 
     res.json({
         ok: true,
         usuarios,
-        uid: req.uid
+        uid: req.uid,
+        total
     });
 }
 
-const crearUsuario = async (req, res = response)=> {
+const crearUsuario = async (req, res = response) => {
 
     const { email, password } = req.body;
 
