@@ -50,7 +50,7 @@ const crearUsuario = async (req, res = response) => {
         if ( existeEmail ) {
             return res.status(400).json({
                 ok: false,
-                msg: 'El correo ya esta registrado'
+                msg: 'La dirección de correo electrónico que ha ingresado ya está registrada'
             });
         }
 
@@ -99,11 +99,9 @@ const actualizarUsuario = async (req, res = response) => {
         }
 
         //Actualizaciones
-        //Desestructuración de objetos, permite desempacar valores 
-        //de arreglos o propiedades de objetos en distintas variables 
         const { password, google, email, ...campos } = req.body;
-
-        if ( usuarioDB.email !== email ) {
+        console.log(usuarioBD);
+        if(usuarioBD.email !== email) {
             
             const existeEmail = await Usuario.findOne({ email });
 
@@ -115,13 +113,23 @@ const actualizarUsuario = async (req, res = response) => {
             }
         }
 
+        //campos.email = email;
+
+        if ( !usuarioBD.google ) {
+            campos.email = email;
+        } else if( usuarioBD.email !== email) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Usuario de Google no puede cambiar su correo'
+            });
+        }
+
         const usuarioActualizado = await Usuario.findByIdAndUpdate(uid, campos, { new: true });
 
         res.json({
             ok: true,
             usuario: usuarioActualizado
-        })
-
+        });
         
     } catch (error) {
         console.log(error);

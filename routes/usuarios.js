@@ -17,24 +17,24 @@ router.get( '/', validarJWT, getUsuarios );
 //Ruta para crear usuarios
 //Middleware, validar nombre,password, etc..(se pasa como segundo parametro)
 router.post( '/', 
-[
-    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    check('password', 'El password es obligatorio').not().isEmpty(),
-    check('email', 'El email es obligatorio').isEmail(),
-    validarCampos
-],
-crearUsuario 
+    [
+        check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+        check('password', 'El password es obligatorio').not().isEmpty(),
+        check('email', 'El email es obligatorio').isEmail(),
+        validarCampos
+    ],
+    crearUsuario 
 );
 
 router.put( '/:id', 
-[   
-    validarJWT,
-    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    check('email', 'El email es obligatorio').isEmail(),
-    check('role', 'El role es obligatorio').not().isEmpty(),
-    validarCampos
-],
-actualizarUsuario
+    [   
+        validarJWT,
+        check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+        check('email', 'El email es obligatorio').isEmail(),
+        check('role', 'El role es obligatorio').not().isEmpty(),
+        validarCampos,
+    ],
+    actualizarUsuario
 );
 
 router.delete( '/:id', validarJWT, borrarUsuario);

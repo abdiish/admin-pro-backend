@@ -27,7 +27,7 @@
     google: {
         type: Boolean,
         default: false
-    }
+    },
  });
 
  //Extraer la version y id, que viene en la instancia del objeto
